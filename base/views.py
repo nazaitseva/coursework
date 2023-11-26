@@ -10,6 +10,50 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import generics
+from .serializers import CommentsListSerializer
+from .serializers import ProductsListSerializer
+
+from django.db.models import Q
+import django_filters
+
+class ProductsListView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductsListSerializer
+
+class CommentsFilter(django_filters.FilterSet):
+    queryset = Comment.objects.all()
+    class Meta:
+        model = Comment
+        fields = ['post', 'author', 'content', 'created_at']
+
+class CommentsListView(generics.ListAPIView):
+    model = Comment
+    serializer_class = CommentsListSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = CommentsFilter
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_authenticated:
+            return Comment.objects.filter(author=user).order_by('-created_at')
+        else:
+            return Comment.objects.none()
+
+class ProductsListAllView(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductsListSerializer
+
+    @action(detail=False, methods=['GET'])
+    def all(self, request):
+        queryset = self.queryset
+        serialized_data = self.get_serializer(queryset, many=True).data
+        return Response(serialized_data)
+
 def loginpage(request):
     page = 'login'
     if request.method == 'GET':
