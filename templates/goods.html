@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h2>Товары для сна</h2>
+
+{% for store in stores %}
+    <h3>{{ store.name }}</h3>
+    <ul>
+    {% for product in store.sleep_products.all %}
+        <li>{{ product.name }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+
+{% endblock %}

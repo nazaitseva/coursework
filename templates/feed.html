@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h2>Лента</h2>
+<a href="{% url 'addpost' %}">Добавьте свой пост!</a>
+<div>
+    <section>
+        {% for post in posts %}
+            <hr>
+            <a href="{% url 'updatepost' post.id %}">Редактировать</a>
+            <a href="{% url 'deletepost' post.id %}">Удалить</a>
+            <p>{{post.id}} -- <a href="{% url 'post' post.id %}">{{post.title}}</a></p>
+        {% endfor %}
+    </section>
+</div>
+
+{% endblock %}

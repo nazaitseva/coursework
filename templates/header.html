@@ -1,0 +1,14 @@
+<header>
+    <a href="/">SleepLovers</a>
+    <ul>
+        <li><a href="/feed">Лента</a></li>
+        <li><a href="/goods">Товары</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">Выйти из {{ request.user.username }}</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Профиль</a></li>
+        {% endif %}
+        <li><a href="/feedback">Обратная связь</a></li>
+    </ul>
+</header>
+<hr>

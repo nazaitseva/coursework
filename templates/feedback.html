@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    <section>
+        <h2>Свяжитесь с нами!</h2>
+        <form action="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Отправить">
+        </form>
+    </section>
+</div>
+
+{% endblock %}
