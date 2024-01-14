@@ -19,6 +19,9 @@ class CommentsResource(resources.ModelResource):
     def dehydrate_title(self, comment):
         return comment.title.upper() if comment.title else ""
 
+class CommentsResource(ImportExportModelAdmin):
+	list_display = ('id', 'post', 'author', 'content', 'created_at')
+
 class UserProfileAdmin(admin.ModelAdmin):
 	list_display = ('id', 'user', 'bio')
 	list_display_links = ('id', 'user')

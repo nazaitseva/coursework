@@ -24,6 +24,12 @@ class ProductsListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductsListSerializer
 
+    @action(methods=['GET'], detail=False, url_path='product')
+    def get_queryset(self, products):
+        products = Product.objects.filter(Q(product__exact=2))
+        data = ProductSerializer(instance=products, many=True).data
+        return Response(data)
+
 class CommentsFilter(django_filters.FilterSet):
     queryset = Comment.objects.all()
     class Meta:
